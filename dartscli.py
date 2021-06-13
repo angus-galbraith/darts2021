@@ -1,6 +1,6 @@
 
 
-
+# create a class that will be assigned to each player
 
 
 class player:
