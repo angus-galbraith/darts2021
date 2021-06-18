@@ -34,11 +34,13 @@ class game:
         self.player2 = player(player2name)
     
         # set game parameters
-        self.sets = input("Number of Sets: ")
-        self.legs = input("Number of Legs per Set: ")
+        sets = int(input("Number of Sets: "))
+        legs = int(input("Number of Legs per Set: "))
+        setstowin = sets//2 + 1
+        legstowin = legs//2 + 1
         self.gameState = {
-            "sets": self.sets,
-            "legs": self.legs,
+            "setstowin": setstowin,
+            "legstowin": legstowin,
             "playerToGo": 1,
 
         }
@@ -86,7 +88,8 @@ class game:
         if player == 1:
             print("Player 1 won that leg.")
             self.player1.stats['legs'] += 1
-            print(print(self.player1.stats['legs']))
+            if self.player1.stats['legs'] == self.gameState['legstowin']:
+                self.setWon()
             self.winner = True
 
         else:
@@ -95,7 +98,17 @@ class game:
 
 
 
+    def setWon(self, player):
 
+        if player ==1:
+            self.player1.stats['sets']+=1
+            self.player1.stats['legs'] = 0
+            self.currentScore()
+
+
+    def currentScore(self):
+
+        print("Current Score: Player 1: Sets:-", self.player1.stats['sets'], "Legs:- ", self.player1.stats['legs'])
     
 
         
