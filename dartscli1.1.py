@@ -37,18 +37,72 @@ class game:
             "playerToGo": 1,
 
         }
-
+        self.legToPlay = 1
+        self.setToPlay = 1
         self.winner = False
-    
+        self.playerToThrow(1)
+
+    def playerToThrow(self):
+        if self.setToPlay % 2 != 0:
+            if self.legToPlay % 2 != 0:
+                self.toThrow(1)
+            else:
+                self.toThrow(2)
+        else:
+            if self.legToPlay % 2 != 0:
+                self.toThrow(2)
+            else:
+                self.toThrow(1)
 
     def toThrow(self, player):
-        pass
+        if player == 1:
+            print(self.player1.stats['name'], "to go you have ", self.player1.stats['score'], "remaining")
+            self.scoreEntered(1)
 
-    def scoreEntered(self, player, score):
-        pass
-    
+        else:
+            print(self.player2.stats['name'], "to go you have ", self.player2.stats['score'], "remaining")
+            self.scoreEntered(2)
+        
+
+    def scoreEntered(self, player):
+        if player == 1:
+            score = int(input("Enter Score : - "))
+            newScore = self.player1.stats['score'] - score
+            self.player1.stats['score'] = newScore
+            if newScore == 0:
+                self.legWon(1)
+            else:
+                self.toThrow(2)
+
+        else:
+            score = int(input("Enter Score : - "))
+            newScore = self.player2.stats['score'] - score
+            self.player2.stats['score'] = newScore
+            if newScore == 0:
+                self.legWon(2)
+            else:
+                self.toThrow(1)
+        
+
     def legWon(self, player):
-        pass
+        if player == 1:
+            self.player1.stats['legs']+= 1
+            if self.player1.stats['legs'] == self.gameState['legstowin']:
+                self.player1.stats['sets']+= 1
+                self.setWon(1)
+            else:
+                self.player1.stats['score']
+                self.player2.stats['score']
+                self.toThrow()
+                
+
+        else:
+            self.player2.stats['legs']+= 1
+            if self.player2.stats['legs'] == self.gameState['legstowin']:
+                self.player2.stats['sets']+= 1
+                self.setWon(2)
+
+
 
     def setWon(self, player):
         pass
