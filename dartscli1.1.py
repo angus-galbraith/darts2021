@@ -55,6 +55,9 @@ class game:
                 self.toThrow(1)
 
     def toThrow(self, player):
+        print("Current Score : ")
+        print("Player 1 Sets ", self.player1.stats['sets'], "Legs ", self.player1.stats['legs'])
+        print("Player 2 Sets ", self.player2.stats['sets'], "Legs ", self.player2.stats['legs'])
         if player == 1:
             print(self.player1.stats['name'], "to go you have ", self.player1.stats['score'], "remaining")
             self.scoreEntered(1)
@@ -88,12 +91,12 @@ class game:
         if player == 1:
             self.player1.stats['legs']+= 1
             if self.player1.stats['legs'] == self.gameState['legstowin']:
-                self.player1.stats['sets']+= 1
                 self.setWon(1)
             else:
-                self.player1.stats['score']
-                self.player2.stats['score']
-                self.toThrow()
+                self.player1.stats['score'] = 501
+                self.player2.stats['score'] = 501
+                self.legToPlay += 1
+                self.playerToThrow()
                 
 
         else:
@@ -101,11 +104,35 @@ class game:
             if self.player2.stats['legs'] == self.gameState['legstowin']:
                 self.player2.stats['sets']+= 1
                 self.setWon(2)
+            else:
+                self.player1.stats['score'] = 501
+                self.player2.stats['score'] = 501
+                self.legToPlay += 1
+                self.playerToThrow()
 
 
 
     def setWon(self, player):
-        pass
+        if player == 1:
+            self.player1.stats['sets']+= 1
+            if self.player1.stats['sets'] == self.gameState['setstowin']:
+                self.matchWon(1)
+            else:
+                self.player1.stats['score'] = 501
+                self.player2.stats['score'] = 501
+                self.legToPlay = 1
+                self.playerToThrow()
+        
+        else:
+            self.player2.stats['sets']+= 1
+            if self.player2.stats['sets'] == self.gameState['setstowin']:
+                self.matchWon(2)
+            else:
+                self.player1.stats['score'] = 501
+                self.player2.stats['score'] = 501
+                self.playerToThrow()
+
+
     
 
     def matchWon(self, player):
