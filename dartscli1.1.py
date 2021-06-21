@@ -56,9 +56,7 @@ class game:
                 self.toThrow(1)
 
     def toThrow(self, player):
-        print("Current Score : ")
-        print(self.player1.stats['name'], "Sets ", self.player1.stats['sets'], "Legs ", self.player1.stats['legs'])
-        print(self.player2.stats['name'], "Sets ", self.player2.stats['sets'], "Legs ", self.player2.stats['legs'])
+        
         if player == 1:
             print(self.player1.stats['name'], "to go you have ", self.player1.stats['score'], "remaining")
             self.scoreEntered(1)
@@ -97,18 +95,20 @@ class game:
                 self.player1.stats['score'] = 501
                 self.player2.stats['score'] = 501
                 self.legToPlay += 1
+                self.currentScore()
                 self.playerToThrow()
+                
                 
 
         else:
             self.player2.stats['legs']+= 1
             if self.player2.stats['legs'] == self.gameState['legstowin']:
-                self.player2.stats['sets']+= 1
                 self.setWon(2)
             else:
                 self.player1.stats['score'] = 501
                 self.player2.stats['score'] = 501
                 self.legToPlay += 1
+                self.currentScore()
                 self.playerToThrow()
 
 
@@ -125,6 +125,7 @@ class game:
                 self.player1.stats['legs'] = 0
                 self.player2.stats['legs'] = 0
                 self.legToPlay = 1
+                self.currentScore()
                 self.playerToThrow()
         
         else:
@@ -137,6 +138,8 @@ class game:
                 self.player2.stats['score'] = 501
                 self.player1.stats['legs'] = 0
                 self.player2.stats['legs'] = 0
+                self.legToPlay = 1
+                self.currentScore()
                 self.playerToThrow()
 
 
@@ -145,6 +148,11 @@ class game:
 
     def matchWon(self, player):
         print("Winner")
+
+    def currentScore(self):
+        print("Current Score : ")
+        print(self.player1.stats['name'], "Sets ", self.player1.stats['sets'], "Legs ", self.player1.stats['legs'])
+        print(self.player2.stats['name'], "Sets ", self.player2.stats['sets'], "Legs ", self.player2.stats['legs'])
 
 
 
