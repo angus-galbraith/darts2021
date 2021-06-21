@@ -71,6 +71,11 @@ class game:
             score = int(input("Enter Score : - "))
             newScore = self.player1.stats['score'] - score
             self.player1.stats['score'] = newScore
+            if score == 180:
+                self.player1.stats['180'] += 1
+            elif score >= 140:
+                self.player1.stats['140'] += 1
+
             if newScore == 0:
                 self.legWon(1)
             else:
@@ -153,6 +158,8 @@ class game:
         print("Current Score : ")
         print(self.player1.stats['name'], "Sets ", self.player1.stats['sets'], "Legs ", self.player1.stats['legs'])
         print(self.player2.stats['name'], "Sets ", self.player2.stats['sets'], "Legs ", self.player2.stats['legs'])
+        print(self.player1.stats['180'])
+        print(self.player1.stats['140'] )
 
 
 
