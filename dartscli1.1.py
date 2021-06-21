@@ -119,6 +119,7 @@ class game:
             if self.player1.stats['sets'] == self.gameState['setstowin']:
                 self.matchWon(1)
             else:
+                self.setToPlay += 1
                 self.player1.stats['score'] = 501
                 self.player2.stats['score'] = 501
                 self.player1.stats['legs'] = 0
@@ -131,6 +132,7 @@ class game:
             if self.player2.stats['sets'] == self.gameState['setstowin']:
                 self.matchWon(2)
             else:
+                self.setToPlay += 1
                 self.player1.stats['score'] = 501
                 self.player2.stats['score'] = 501
                 self.player1.stats['legs'] = 0
