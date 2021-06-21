@@ -40,7 +40,8 @@ class game:
         self.legToPlay = 1
         self.setToPlay = 1
         self.winner = False
-        self.playerToThrow(1)
+        self.playerToThrow()
+
 
     def playerToThrow(self):
         if self.setToPlay % 2 != 0:
@@ -56,8 +57,8 @@ class game:
 
     def toThrow(self, player):
         print("Current Score : ")
-        print("Player 1 Sets ", self.player1.stats['sets'], "Legs ", self.player1.stats['legs'])
-        print("Player 2 Sets ", self.player2.stats['sets'], "Legs ", self.player2.stats['legs'])
+        print(self.player1.stats['name'], "Sets ", self.player1.stats['sets'], "Legs ", self.player1.stats['legs'])
+        print(self.player2.stats['name'], "Sets ", self.player2.stats['sets'], "Legs ", self.player2.stats['legs'])
         if player == 1:
             print(self.player1.stats['name'], "to go you have ", self.player1.stats['score'], "remaining")
             self.scoreEntered(1)
@@ -120,6 +121,8 @@ class game:
             else:
                 self.player1.stats['score'] = 501
                 self.player2.stats['score'] = 501
+                self.player1.stats['legs'] = 0
+                self.player2.stats['legs'] = 0
                 self.legToPlay = 1
                 self.playerToThrow()
         
@@ -130,13 +133,16 @@ class game:
             else:
                 self.player1.stats['score'] = 501
                 self.player2.stats['score'] = 501
+                self.player1.stats['legs'] = 0
+                self.player2.stats['legs'] = 0
                 self.playerToThrow()
+
 
 
     
 
     def matchWon(self, player):
-        pass
+        print("Winner")
 
 
 
