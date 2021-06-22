@@ -17,6 +17,37 @@ class player:
             "Checkout %": 0,
         }
 
+    def score_entered(self, next):
+        next = next
+        score = int(input("Enter Score : - "))
+        newScore = self.stats['score'] - score
+        self.stats['score'] = newScore
+        if score == 180:
+            self.stats['180'] += 1
+        elif score >= 140:
+            self.stats['140'] += 1
+        elif score >= 140:
+            self.stats['100'] += 1
+        elif score >= 80:
+            self.stats['80'] += 1
+        elif score >= 60:
+            self.stats['60'] += 1
+
+        if newScore == 0:
+            self.leg_won(1)
+        else:
+            g.toThrow(next)
+
+
+    def leg_won(self):
+        print("leg won")
+
+    def set_won(self):
+        pass
+
+    def match_won(self):
+        pass
+
 
 class game:
     def __init__(self):
@@ -40,7 +71,7 @@ class game:
         self.legToPlay = 1
         self.setToPlay = 1
         self.winner = False
-        self.playerToThrow()
+        
 
 
     def playerToThrow(self):
@@ -59,36 +90,15 @@ class game:
         
         if player == 1:
             print(self.player1.stats['name'], "to go you have ", self.player1.stats['score'], "remaining")
-            self.scoreEntered(1)
+            self.player1.score_entered(2)
 
         else:
             print(self.player2.stats['name'], "to go you have ", self.player2.stats['score'], "remaining")
-            self.scoreEntered(2)
+            self.player2.score_entered(1)
         
 
-    def scoreEntered(self, player):
-        if player == 1:
-            score = int(input("Enter Score : - "))
-            newScore = self.player1.stats['score'] - score
-            self.player1.stats['score'] = newScore
-            if score == 180:
-                self.player1.stats['180'] += 1
-            elif score >= 140:
-                self.player1.stats['140'] += 1
-
-            if newScore == 0:
-                self.legWon(1)
-            else:
-                self.toThrow(2)
-
-        else:
-            score = int(input("Enter Score : - "))
-            newScore = self.player2.stats['score'] - score
-            self.player2.stats['score'] = newScore
-            if newScore == 0:
-                self.legWon(2)
-            else:
-                self.toThrow(1)
+    
+            
         
 
     def legWon(self, player):
@@ -165,3 +175,4 @@ class game:
 
 if __name__ == "__main__":
     g = game()
+    g.playerToThrow()
