@@ -19,8 +19,17 @@ class player:
         }
 
 class game:
-    def __init__(self):
-        pass
+    def __init__(self, sets, legs):
+        
+        setstowin = sets//2 + 1
+        legstowin = legs//2 + 1
+        self.gameState = {
+            "setstowin": setstowin,
+            "legstowin": legstowin,
+            "playerToGo": 1,
+
+        }
+        
 
 class MainScreen(tk.Tk):
     def __init__(self):
@@ -191,23 +200,28 @@ class MainScreen(tk.Tk):
         self.pl1_entry.grid(row=0, column=1)
         pl2_name = tk.Label(newgame_window, text="Player 2")
         pl2_name.grid(row=1,column=0)
-        pl2_entry = tk.Entry(newgame_window)
-        pl2_entry.grid(row=1, column=1)
+        self.pl2_entry = tk.Entry(newgame_window)
+        self.pl2_entry.grid(row=1, column=1)
         sets_label = tk.Label(newgame_window, text="Number of Sets.")
         sets_label.grid(row=2, column=0)
-        sets_spinbox = tk.Spinbox(newgame_window, values=(1,3,5))
-        sets_spinbox.grid(row=2, column=1)
+        self.sets_spinbox = tk.Spinbox(newgame_window, values=(1,3,5))
+        self.sets_spinbox.grid(row=2, column=1)
         legs_label = tk.Label(newgame_window, text="Number of Legs.")
         legs_label.grid(row=3, column=0)
-        legs_spinbox = tk.Spinbox(newgame_window, values=(1,3,5))
-        legs_spinbox.grid(row=3, column=1)
+        self.legs_spinbox = tk.Spinbox(newgame_window, values=(1,3,5))
+        self.legs_spinbox.grid(row=3, column=1)
         start_button = tk.Button(newgame_window, text="Start", command=self.start_game)
         start_button.grid(row=4, column=0, columnspan=2, sticky=EW)
 
     def start_game(self):
         pl1name = self.pl1_entry.get()
-        self.player1name.set(pl1name)
-
+        self.player1 = player(pl1name)
+        pl2name = self.pl2_entry.get()
+        self.player2 = player(pl2name)
+        self.sets = int(self.sets_spinbox.get())
+        self.legs = int(self.legs_spinbox.get())
+        g = game(self.sets, self.legs)
+ 
 if __name__ == "__main__":
     screen = MainScreen()
     screen.mainloop()
