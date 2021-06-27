@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter.constants import BOTH, E, EW, GROOVE, LEFT, RAISED, RIGHT, TOP, TRUE, VERTICAL, W, X, Y, YES
+from tkinter.constants import BOTH, E, EW, GROOVE, LEFT, NSEW, RAISED, RIGHT, TOP, TRUE, VERTICAL, W, X, Y, YES
 
 
 
@@ -17,25 +17,29 @@ class MainScreen(tk.Tk):
         self.menu.add_cascade(label="Game Options", menu=self.game_menu)
         self.config(menu=self.menu)
 
-        
+        #variables 
 
+        
         # create frames
     
         
         pl1stats_frame = tk.LabelFrame(self, text='Player 1')
-        pl1stats_frame.grid(row=0, column=0, sticky=EW)
+        pl1stats_frame.grid(row=0, column=0, sticky=NSEW)
         
 
         score_frame = tk.LabelFrame(self, text='Scores')
-        score_frame.grid(row=0, column=1, sticky=EW)
+        score_frame.grid(row=0, column=1, sticky=NSEW)
         
 
         pl2stats_frame = tk.LabelFrame(self, text='Player 2')
-        pl2stats_frame.grid(row=0, column=2, sticky=EW)
+        pl2stats_frame.grid(row=0, column=2, sticky=NSEW)
 
         self.grid_columnconfigure(0, weight=1, uniform='group1')
         self.grid_columnconfigure(1, weight=1, uniform='group1')
         self.grid_columnconfigure(2, weight=1, uniform='group1')
+        self.grid_rowconfigure(0, weight=1)
+
+        
 
 
         #player1 widgets
@@ -88,9 +92,28 @@ class MainScreen(tk.Tk):
 
         #score frame widets
 
-        player1_remaining = tk.Label(score_frame, text="Player 1")
-        player1_remaining.grid(row=0, column=0)
-        
+        player1_remaining = tk.Label(score_frame, text="Remaining")
+        player1_remaining.grid(row=0, column=0, columnspan=2, sticky=EW)
+        player1_name = tk.Label(score_frame, text="Player 1")
+        player1_name.grid(row=1, column=0, sticky=EW)
+        player2_name = tk.Label(score_frame, text="Player 2")
+        player2_name.grid(row=1, column=1, sticky=EW)
+        player1remaining_label = tk.Label(score_frame, text="501", font=(None, 40))
+        player1remaining_label.grid(row=2, column=0, sticky=NSEW)
+        player1remaining_label.configure(bg="yellow")
+        player2remaining_label = tk.Label(score_frame, text="501", font=(None, 40))
+        player2remaining_label.grid(row=2, column=1, sticky=NSEW)
+        tothrow_label = tk.Label(score_frame, text="To Throw: ")
+        tothrow_label.grid(row=3, column=0)
+        playertothrow_label = tk.Label(score_frame, text="name")
+        playertothrow_label.grid(row=3, column=1)
+        score_entry = tk.Entry(score_frame, width=10)
+        score_entry.grid(row=4, column=0)
+        score_button = tk.Button(score_frame, text="Enter")
+        score_button.grid(row=4, column=1)
+
+
+
         #player2 widgets
 
         player2sets = tk.Label(pl2stats_frame, text="Sets:  ")
@@ -140,7 +163,28 @@ class MainScreen(tk.Tk):
 
 
     def new_game(self):
-        pass
+        newgame_window = tk.Toplevel()
+        pl1_name = tk.Label(newgame_window, text="Player 1")
+        pl1_name.grid(row=0,column=0)
+        pl1_entry = tk.Entry(newgame_window)
+        pl1_entry.grid(row=0, column=1)
+        pl2_name = tk.Label(newgame_window, text="Player 2")
+        pl2_name.grid(row=1,column=0)
+        pl2_entry = tk.Entry(newgame_window)
+        pl2_entry.grid(row=1, column=1)
+        sets_label = tk.Label(newgame_window, text="Number of Sets.")
+        sets_label.grid(row=2, column=0)
+        sets_spinbox = tk.Spinbox(newgame_window, values=(1,3,5))
+        sets_spinbox.grid(row=2, column=1)
+        legs_label = tk.Label(newgame_window, text="Number of Legs.")
+        legs_label.grid(row=3, column=0)
+        legs_spinbox = tk.Spinbox(newgame_window, values=(1,3,5))
+        legs_spinbox.grid(row=3, column=1)
+        start_button = tk.Button(newgame_window, text="Start", command=self.start_game)
+        start_button.grid(row=4, column=0, columnspan=2, sticky=EW)
+
+    def start_game(self):
+        print("Game Satrted")
 
 if __name__ == "__main__":
     screen = MainScreen()
