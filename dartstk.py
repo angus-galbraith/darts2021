@@ -1,7 +1,26 @@
 import tkinter as tk
 from tkinter.constants import BOTH, E, EW, GROOVE, LEFT, NSEW, RAISED, RIGHT, TOP, TRUE, VERTICAL, W, X, Y, YES
 
+class player:
+    def __init__(self, name):
+        self.name = name
+        self.stats = {
+            "name": self.name,
+            "score": 501,
+            "sets": 0,
+            "legs": 0,
+            "180": 0,
+            "140": 0,
+            "100": 0,
+            "80": 0,
+            "60": 0,
+            "Average": 0,
+            "Checkout %": 0,
+        }
 
+class game:
+    def __init__(self):
+        pass
 
 class MainScreen(tk.Tk):
     def __init__(self):
@@ -18,6 +37,8 @@ class MainScreen(tk.Tk):
         self.config(menu=self.menu)
 
         #variables 
+        self.player1name = tk.StringVar()
+        self.player1name.set("Bob")
 
         
         # create frames
@@ -94,7 +115,7 @@ class MainScreen(tk.Tk):
 
         player1_remaining = tk.Label(score_frame, text="Remaining")
         player1_remaining.grid(row=0, column=0, columnspan=2, sticky=EW)
-        player1_name = tk.Label(score_frame, text="Player 1")
+        player1_name = tk.Label(score_frame, textvariable=self.player1name)
         player1_name.grid(row=1, column=0, sticky=EW)
         player2_name = tk.Label(score_frame, text="Player 2")
         player2_name.grid(row=1, column=1, sticky=EW)
@@ -166,8 +187,8 @@ class MainScreen(tk.Tk):
         newgame_window = tk.Toplevel()
         pl1_name = tk.Label(newgame_window, text="Player 1")
         pl1_name.grid(row=0,column=0)
-        pl1_entry = tk.Entry(newgame_window)
-        pl1_entry.grid(row=0, column=1)
+        self.pl1_entry = tk.Entry(newgame_window)
+        self.pl1_entry.grid(row=0, column=1)
         pl2_name = tk.Label(newgame_window, text="Player 2")
         pl2_name.grid(row=1,column=0)
         pl2_entry = tk.Entry(newgame_window)
@@ -184,7 +205,8 @@ class MainScreen(tk.Tk):
         start_button.grid(row=4, column=0, columnspan=2, sticky=EW)
 
     def start_game(self):
-        print("Game Satrted")
+        pl1name = self.pl1_entry.get()
+        self.player1name.set(pl1name)
 
 if __name__ == "__main__":
     screen = MainScreen()
