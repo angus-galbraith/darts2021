@@ -7,7 +7,7 @@ class player:
         self.stats = {
             "name": self.name,
             "score": 501,
-            "sets": 0,
+            "sets": 3,
             "legs": 0,
             "180": 0,
             "140": 0,
@@ -17,7 +17,7 @@ class player:
             "Average": 0,
             "Checkout %": 0,
         }
-
+        self
 class game:
     def __init__(self, sets, legs):
         
@@ -48,6 +48,8 @@ class MainScreen(tk.Tk):
         #variables 
         self.player1name = tk.StringVar()
         self.player1name.set("Bob")
+        self.player1sets = tk.IntVar()
+        
 
         
         # create frames
@@ -77,7 +79,7 @@ class MainScreen(tk.Tk):
         
         player1sets = tk.Label(pl1stats_frame, text="Sets:  ")
         player1sets.grid(row=0, column=0, sticky=EW)
-        player1setsvalue = tk.Label(pl1stats_frame, text=" 0")
+        player1setsvalue = tk.Label(pl1stats_frame, textvariable=self.player1sets)
         player1setsvalue.grid(row=0, column=1, sticky=EW)
         
         player1legs = tk.Label(pl1stats_frame, text="Legs:  ")
@@ -193,24 +195,24 @@ class MainScreen(tk.Tk):
 
 
     def new_game(self):
-        newgame_window = tk.Toplevel()
-        pl1_name = tk.Label(newgame_window, text="Player 1")
+        self.newgame_window = tk.Toplevel()
+        pl1_name = tk.Label(self.newgame_window, text="Player 1")
         pl1_name.grid(row=0,column=0)
-        self.pl1_entry = tk.Entry(newgame_window)
+        self.pl1_entry = tk.Entry(self.newgame_window)
         self.pl1_entry.grid(row=0, column=1)
-        pl2_name = tk.Label(newgame_window, text="Player 2")
+        pl2_name = tk.Label(self.newgame_window, text="Player 2")
         pl2_name.grid(row=1,column=0)
-        self.pl2_entry = tk.Entry(newgame_window)
+        self.pl2_entry = tk.Entry(self.newgame_window)
         self.pl2_entry.grid(row=1, column=1)
-        sets_label = tk.Label(newgame_window, text="Number of Sets.")
+        sets_label = tk.Label(self.newgame_window, text="Number of Sets.")
         sets_label.grid(row=2, column=0)
-        self.sets_spinbox = tk.Spinbox(newgame_window, values=(1,3,5))
+        self.sets_spinbox = tk.Spinbox(self.newgame_window, values=(1,3,5))
         self.sets_spinbox.grid(row=2, column=1)
-        legs_label = tk.Label(newgame_window, text="Number of Legs.")
+        legs_label = tk.Label(self.newgame_window, text="Number of Legs.")
         legs_label.grid(row=3, column=0)
-        self.legs_spinbox = tk.Spinbox(newgame_window, values=(1,3,5))
+        self.legs_spinbox = tk.Spinbox(self.newgame_window, values=(1,3,5))
         self.legs_spinbox.grid(row=3, column=1)
-        start_button = tk.Button(newgame_window, text="Start", command=self.start_game)
+        start_button = tk.Button(self.newgame_window, text="Start", command=self.start_game)
         start_button.grid(row=4, column=0, columnspan=2, sticky=EW)
 
     def start_game(self):
@@ -220,6 +222,7 @@ class MainScreen(tk.Tk):
         self.player2 = player(pl2name)
         self.sets = int(self.sets_spinbox.get())
         self.legs = int(self.legs_spinbox.get())
+        self.newgame_window.destroy()
         g = game(self.sets, self.legs)
  
 if __name__ == "__main__":
