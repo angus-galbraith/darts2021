@@ -21,10 +21,21 @@ class player:
 class game:
     def __init__(self, sets, legs, pl1name, pl2name):
         
+        
         self.setstowin = sets//2 + 1
         self.legstowin = legs//2 + 1
         self.legToPlay = 1
         self.setToPlay = 1
+        player1 = player(pl1name)
+        player2 = player(pl2name)
+        self.winner = False
+        screen.player1name.set(player1.stats["name"])
+        screen.player2name.set(player2.stats["name"])
+        self.gameLoop()
+
+    def gameLoop(self):
+        pass
+        
         
         
 
@@ -237,7 +248,7 @@ class MainScreen(tk.Tk):
         sets = int(self.sets_spinbox.get())
         legs = int(self.legs_spinbox.get())
         self.newgame_window.destroy()
-        g = game(self.sets, self.legs)
+        g = game(sets, legs, pl1name, pl2name)
  
 if __name__ == "__main__":
     screen = MainScreen()
