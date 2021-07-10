@@ -2,12 +2,12 @@ import tkinter as tk
 from tkinter.constants import BOTH, E, EW, GROOVE, LEFT, NSEW, RAISED, RIGHT, TOP, TRUE, VERTICAL, W, X, Y, YES
 
 class player:
-    def __init__(self, name):
-        self.name = name
+    def __init__(self,):
+        
         self.stats = {
-            "name": self.name,
+            "name": "Player",
             "score": 501,
-            "sets": 3,
+            "sets": 0,
             "legs": 0,
             "180": 0,
             "140": 0,
@@ -18,26 +18,109 @@ class player:
             "Checkout %": 0,
         }
         
+    def scoreEntered(self, score):
+        score=score
+        newScore = self.stats['score'] - score
+        self.stats['score'] = newScore
+        
+        if score == 180:
+            self.stats['180'] += 1
+        elif score >= 140:
+            self.stats['140'] += 1
+        elif score >= 100:
+            self.stats['100'] += 1
+        elif score >= 80:
+            self.stats['80'] += 1
+        elif score >= 60:
+            self.stats['60'] += 1
+
+        g.screenRefresh()
+
+        return
+
+
+
+
 class game:
-    def __init__(self, sets, legs, pl1name, pl2name):
-        
-        
+    def __init__(self):
+        pass
+    
+
+
+    def gameStatus(self, sets, legs):
         self.setstowin = sets//2 + 1
         self.legstowin = legs//2 + 1
         self.legToPlay = 1
         self.setToPlay = 1
-        player1 = player(pl1name)
-        player2 = player(pl2name)
+        self.to_throw = 1
+        self.currentPlayer = 0
         self.winner = False
         screen.player1name.set(player1.stats["name"])
         screen.player2name.set(player2.stats["name"])
-        self.gameLoop()
+        
 
-    def gameLoop(self):
-        pass
+    def playerToThrow(self):
+        if self.setToPlay % 2 != 0:
+            if self.legToPlay % 2 != 0:
+                self.currentPlayer = 1
+                self.toThrow()
+            else:
+                self.currentPlayer = 2
+                self.toThrow()
+        else:
+            if self.legToPlay % 2 != 0:
+                self.currentPlayer = 2
+                self.toThrow()
+            else:
+                self.currentPlayer = 1
+                self.toThrow()
+
+    def toThrow(self):
         
+        if self.currentPlayer == 1:
+            screen.player1remaining_label.configure(bg="yellow")
+            screen.player2remaining_label.configure(bg="white")
+            screen.playertothrow.set(player1.stats["name"])
+            screen.score_entry.focus()
+            
+            
+
+        else:
+            screen.player2remaining_label.configure(bg="yellow")
+            screen.player1remaining_label.configure(bg="white")
+            screen.playertothrow.set(player2.stats["name"])
+            
+
+
+
+    def buttonPressed(self, score):
         
+        if self.currentPlayer == 1:
+            player1.scoreEntered(score)
+            screen.score_entry.delete(0, 'end')
+            self.currentPlayer = 2
+            self.toThrow()
+
+        else:
+            player2.scoreEntered(score)
+            screen.score_entry.delete(0, 'end')
+            self.currentPlayer = 1
+            self.toThrow()
+
+    def screenRefresh(self):
+        screen.player1remaining.set(player1.stats['score'])
+        screen.player1_180.set(player1.stats['180'])
+        screen.player1_140.set(player1.stats['140'])
+        screen.player1_100.set(player1.stats['100'])
+        screen.player1_80.set(player1.stats['80'])
+        screen.player1_60.set(player1.stats['60'])
         
+        screen.player2remaining.set(player2.stats['score'])
+        screen.player2_180.set(player2.stats['180'])
+        screen.player2_140.set(player2.stats['140'])
+        screen.player2_100.set(player2.stats['100'])
+        screen.player2_80.set(player2.stats['80'])
+        screen.player2_60.set(player2.stats['60'])
 
 class MainScreen(tk.Tk):
     def __init__(self):
@@ -58,12 +141,15 @@ class MainScreen(tk.Tk):
         self.player1sets = tk.IntVar()
         self.player1legs = tk.IntVar()
         self.player1_180 = tk.IntVar()
+        self.player1_180.set(player1.stats["180"])
         self.player1_140 = tk.IntVar()
         self.player1_100 = tk.IntVar()
         self.player1_80 = tk.IntVar()
         self.player1_60 = tk.IntVar()
         self.player1avge = tk.IntVar()
         self.player1chkout = tk.IntVar()
+        self.player1remaining = tk.IntVar()
+        self.player1remaining.set(player1.stats["score"])
 
         self.player2name = tk.StringVar()
         self.player2sets = tk.IntVar()
@@ -75,6 +161,10 @@ class MainScreen(tk.Tk):
         self.player2_60 = tk.IntVar()
         self.player2avge = tk.IntVar()
         self.player2chkout = tk.IntVar()
+        self.player2remaining= tk.IntVar()
+        self.player2remaining.set(player2.stats["score"])
+
+        self.playertothrow = tk.StringVar()
 
         
 
@@ -157,18 +247,18 @@ class MainScreen(tk.Tk):
         player1_name.grid(row=1, column=0, sticky=EW)
         player2_name = tk.Label(score_frame, textvariable=self.player2name)
         player2_name.grid(row=1, column=1, sticky=EW)
-        player1remaining_label = tk.Label(score_frame, text="501", font=(None, 40))
-        player1remaining_label.grid(row=2, column=0, sticky=NSEW)
-        player1remaining_label.configure(bg="yellow")
-        player2remaining_label = tk.Label(score_frame, text="501", font=(None, 40))
-        player2remaining_label.grid(row=2, column=1, sticky=NSEW)
+        self.player1remaining_label = tk.Label(score_frame, textvariable=self.player1remaining, font=(None, 40))
+        self.player1remaining_label.grid(row=2, column=0, sticky=NSEW)
+        #self.player1remaining_label.configure(bg="yellow")
+        self.player2remaining_label = tk.Label(score_frame, textvariable=self.player2remaining, font=(None, 40))
+        self.player2remaining_label.grid(row=2, column=1, sticky=NSEW)
         tothrow_label = tk.Label(score_frame, text="To Throw: ")
         tothrow_label.grid(row=3, column=0)
-        playertothrow_label = tk.Label(score_frame, text="name")
+        playertothrow_label = tk.Label(score_frame, textvariable=self.playertothrow)
         playertothrow_label.grid(row=3, column=1)
-        score_entry = tk.Entry(score_frame, width=10)
-        score_entry.grid(row=4, column=0)
-        score_button = tk.Button(score_frame, text="Enter")
+        self.score_entry = tk.Entry(score_frame, width=10)
+        self.score_entry.grid(row=4, column=0)
+        score_button = tk.Button(score_frame, text="Enter", command=self.buttonPressed)
         score_button.grid(row=4, column=1)
 
 
@@ -243,13 +333,23 @@ class MainScreen(tk.Tk):
         start_button.grid(row=4, column=0, columnspan=2, sticky=EW)
 
     def start_game(self):
-        pl1name = self.pl1_entry.get()
-        pl2name = self.pl2_entry.get()
+        player1.stats["name"] = self.pl1_entry.get()
+        player2.stats["name"] = self.pl2_entry.get()
         sets = int(self.sets_spinbox.get())
         legs = int(self.legs_spinbox.get())
+        g.gameStatus(sets, legs)
+        g.playerToThrow()
         self.newgame_window.destroy()
-        g = game(sets, legs, pl1name, pl2name)
+    
+
+    def buttonPressed(self):
+        score = int(self.score_entry.get())
+        g.buttonPressed(score)
+        print(g.currentPlayer, score)
  
 if __name__ == "__main__":
+    player1 = player()
+    player2 = player()
+    g = game()
     screen = MainScreen()
     screen.mainloop()
