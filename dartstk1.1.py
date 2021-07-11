@@ -16,12 +16,19 @@ class player:
             "60": 0,
             "Average": 0,
             "Checkout %": 0,
+            "totalscore": 0,
+            "totaldarts": 0,
         }
         
     def scoreEntered(self, score):
         score=score
         newScore = self.stats['score'] - score
         self.stats['score'] = newScore
+        self.stats['totalscore'] += score
+        self.stats['totaldarts'] += 3
+        self.stats["Average"] = (self.stats['totalscore']/self.stats['totaldarts']) * 3
+        
+
         
         if score == 180:
             self.stats['180'] += 1
@@ -33,8 +40,8 @@ class player:
             self.stats['80'] += 1
         elif score >= 60:
             self.stats['60'] += 1
-
-        g.screenRefresh()
+        
+        
 
         return
 
@@ -98,22 +105,27 @@ class game:
         if self.currentPlayer == 1:
             player1.scoreEntered(score)
             screen.score_entry.delete(0, 'end')
+            self.pl1screenRefresh()
             self.currentPlayer = 2
             self.toThrow()
 
         else:
             player2.scoreEntered(score)
             screen.score_entry.delete(0, 'end')
+            self.pl2screenRefresh()
             self.currentPlayer = 1
             self.toThrow()
 
-    def screenRefresh(self):
+    def pl1screenRefresh(self):
         screen.player1remaining.set(player1.stats['score'])
         screen.player1_180.set(player1.stats['180'])
         screen.player1_140.set(player1.stats['140'])
         screen.player1_100.set(player1.stats['100'])
         screen.player1_80.set(player1.stats['80'])
         screen.player1_60.set(player1.stats['60'])
+        screen.player1avge.set(player1.stats['Average'])
+
+    def pl2screenRefresh(self):
         
         screen.player2remaining.set(player2.stats['score'])
         screen.player2_180.set(player2.stats['180'])
@@ -121,6 +133,7 @@ class game:
         screen.player2_100.set(player2.stats['100'])
         screen.player2_80.set(player2.stats['80'])
         screen.player2_60.set(player2.stats['60'])
+        screen.player2avge.set(player2.stats['Average'])
 
 class MainScreen(tk.Tk):
     def __init__(self):
