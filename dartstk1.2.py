@@ -234,6 +234,6 @@ class MainScreen(tk.Tk):
 if __name__ == "__main__":
     player1 = player()
     player2 = player()
-    g = game()
     screen = MainScreen()
+    g = game()
     screen.mainloop()
