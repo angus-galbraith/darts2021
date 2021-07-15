@@ -27,6 +27,7 @@ class player:
         self.stats['totalscore'] += score
         self.stats['totaldarts'] += 3
         self.stats["Average"] = (self.stats['totalscore']/self.stats['totaldarts']) * 3
+        self.stats['legs'] += 1
         
 
         
@@ -41,11 +42,17 @@ class player:
         elif score >= 60:
             self.stats['60'] += 1
         
+        if self.stats['legs'] == g.legstowin:
+            self.setwon()
+
+
+        
         
 
         return
 
-
+    def setwon(self):
+        pass
 
 
 class game:
