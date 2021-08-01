@@ -27,7 +27,7 @@ class player:
         self.stats['totalscore'] += score
         self.stats['totaldarts'] += 3
         self.stats["Average"] = (self.stats['totalscore']/self.stats['totaldarts']) * 3
-        self.stats['legs'] += 1
+        
         
 
         
@@ -44,7 +44,8 @@ class player:
         
         if self.stats['legs'] == g.legstowin:
             self.setwon()
-
+        
+            
 
         
         
@@ -52,7 +53,17 @@ class player:
         return
 
     def setwon(self):
-        pass
+        self.stats['sets'] += 1
+        if self.stats['sets'] == g.setstowin:
+            self.gamewon
+        else:
+            player1.stats['legs'] = 0
+            player2.stats['legs'] = 0
+            g.playerToThrow()
+
+
+    def gamewon(self):
+        print("Game Won")
 
 
 class game:
@@ -124,6 +135,7 @@ class game:
             self.toThrow()
 
     def pl1screenRefresh(self):
+        screen.player1legs.set(player1.stats['legs'])
         screen.player1remaining.set(player1.stats['score'])
         screen.player1_180.set(player1.stats['180'])
         screen.player1_140.set(player1.stats['140'])
@@ -133,7 +145,7 @@ class game:
         screen.player1avge.set(player1.stats['Average'])
 
     def pl2screenRefresh(self):
-        
+        screen.player2legs.set(player2.stats['legs'])
         screen.player2remaining.set(player2.stats['score'])
         screen.player2_180.set(player2.stats['180'])
         screen.player2_140.set(player2.stats['140'])
