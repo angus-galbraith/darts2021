@@ -42,23 +42,43 @@ class player:
         elif score >= 60:
             self.stats['60'] += 1
         
-        if self.stats['legs'] == g.legstowin:
-            self.setwon()
-        
-            
-
-        
+        if self.stats['score'] == 0:
+            self.legwon()
         
 
         return
+
+    def legwon(self):
+        self.stats['legs'] += 1
+        print(g.legstowin)
+
+        if self.stats['legs'] == g.legstowin:
+            self.setwon()
+
+        else:
+            g.resetScores()
+            g.pl1screenRefresh()
+            g.pl2screenRefresh()
+            g.legToPlay += 1
+            g.playerToThrow()
+            
+
+
+
+
+
 
     def setwon(self):
         self.stats['sets'] += 1
         if self.stats['sets'] == g.setstowin:
             self.gamewon
         else:
+            g.setstowin += 1
             player1.stats['legs'] = 0
             player2.stats['legs'] = 0
+            g.resetScores()
+            g.pl1screenRefresh()
+            g.pl2screenRefresh()
             g.playerToThrow()
 
 
@@ -135,6 +155,7 @@ class game:
             self.toThrow()
 
     def pl1screenRefresh(self):
+        screen.player1sets.set(player1.stats['sets'])
         screen.player1legs.set(player1.stats['legs'])
         screen.player1remaining.set(player1.stats['score'])
         screen.player1_180.set(player1.stats['180'])
@@ -145,6 +166,7 @@ class game:
         screen.player1avge.set(player1.stats['Average'])
 
     def pl2screenRefresh(self):
+        screen.player2sets.set(player2.stats['sets'])
         screen.player2legs.set(player2.stats['legs'])
         screen.player2remaining.set(player2.stats['score'])
         screen.player2_180.set(player2.stats['180'])
@@ -153,6 +175,11 @@ class game:
         screen.player2_80.set(player2.stats['80'])
         screen.player2_60.set(player2.stats['60'])
         screen.player2avge.set(player2.stats['Average'])
+
+
+    def resetScores(self):
+        player1.stats['score'] = 501
+        player2.stats['score'] = 501
 
 class MainScreen(tk.Tk):
     def __init__(self):
