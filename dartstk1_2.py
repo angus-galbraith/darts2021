@@ -5,7 +5,6 @@ from player import player
 
 
 
-
 class MainScreen(tk.Tk):
     def __init__(self):
         super().__init__()

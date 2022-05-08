@@ -1,3 +1,9 @@
+import game as g
+
+
+
+
+
 class player:
     def __init__(self,):
         
@@ -24,7 +30,7 @@ class player:
         self.stats['totalscore'] += score
         self.stats['totaldarts'] += 3
         self.stats["Average"] = (self.stats['totalscore']/self.stats['totaldarts']) * 3
-        self.stats['legs'] += 1
+        
         
 
         
@@ -39,15 +45,46 @@ class player:
         elif score >= 60:
             self.stats['60'] += 1
         
-        if self.stats['legs'] == g.legstowin:
-            self.setwon()
-
-
-        
+        if self.stats['score'] == 0:
+            self.legwon()
         
 
         return
 
+    def legwon(self):
+        self.stats['legs'] += 1
+        print(g.legstowin)
+
+        if self.stats['legs'] == g.legstowin:
+            self.setwon()
+
+        else:
+            g.resetScores()
+            g.pl1screenRefresh()
+            g.pl2screenRefresh()
+            g.legToPlay += 1
+            g.playerToThrow()
+            
+
+
+
+
+
+
     def setwon(self):
-        pass
+        self.stats['sets'] += 1
+        if self.stats['sets'] == g.setstowin:
+            self.gamewon
+        else:
+            g.setstowin += 1
+            #player1.stats['legs'] = 0
+            #player2.stats['legs'] = 0
+            g.resetScores()
+            g.pl1screenRefresh()
+            g.pl2screenRefresh()
+            g.playerToThrow()
+
+
+    def gamewon(self):
+        print("Game Won")
 
