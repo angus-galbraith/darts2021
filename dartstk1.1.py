@@ -71,9 +71,9 @@ class player:
     def setwon(self):
         self.stats['sets'] += 1
         if self.stats['sets'] == g.setstowin:
-            self.gamewon
+            g.gameWon()
         else:
-            g.setstowin += 1
+            # g.setstowin += 1
             player1.stats['legs'] = 0
             player2.stats['legs'] = 0
             g.resetScores()
@@ -82,9 +82,7 @@ class player:
             g.playerToThrow()
 
 
-    def gamewon(self):
-        print("Game Won")
-
+    
 
 class game:
     def __init__(self):
@@ -181,11 +179,26 @@ class game:
         player1.stats['score'] = 501
         player2.stats['score'] = 501
 
+
+    def gameWon(self):
+        print("Game Won")
+        winWindow = tk.Toplevel()
+        winner = tk.Label(winWindow, text="winner")
+        winner.grid(row=0,column=0)
+        tk.Label(winWindow, text='180s').grid(row=1, column=0)
+        tk.Label(winWindow, text='140+').grid(row=2, column=0)
+        tk.Label(winWindow, text='100+').grid(row=3, column=0)
+        tk.Label(winWindow, text='80+').grid(row=4, column=0)
+        tk.Label(winWindow, text='60+').grid(row=5, column=0)
+
+
+
 class MainScreen(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("Darts")
         #self.geometry('900x600')
+        self.bind("<Return>", lambda e:self.buttonPressed())
 
         # create menu items 
         self.menu = tk.Menu(self, bg="lightgrey", fg="black")
@@ -237,6 +250,7 @@ class MainScreen(tk.Tk):
 
         score_frame = tk.LabelFrame(self, text='Scores')
         score_frame.grid(row=0, column=1, sticky=NSEW)
+        
         
 
         pl2stats_frame = tk.LabelFrame(self, text='Player 2')
