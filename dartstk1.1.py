@@ -44,6 +44,13 @@ class player:
         
         if self.stats['score'] == 0:
             self.legwon()
+
+        if self.stats['score'] <= 50:
+            newWindow = tk.Toplevel()
+            darts_label = tk.Label(newWindow, text="Number of Darts at Double")
+            darts_label.grid(row=0, column=0)
+            darts_spinbox = tk.Spinbox(newWindow, values=(0,1,2,3))
+            darts_spinbox.grid(row=0, column=1)
         
 
         return
