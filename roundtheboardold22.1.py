@@ -1,6 +1,5 @@
 from tkinter import*
 import os
-import pickle
 
 
 class MainApplication(Frame):
@@ -97,47 +96,8 @@ class MainApplication(Frame):
         pass
 
 
-    def playerStats(self):
-        pass
-        
-
-        '''
-        self.highScoreTable1.set(self.highestScoreTable[0])
-        self.highScoreTable2.set(self.highestScoreTable[1])
-        self.highScoreTable3.set(self.highestScoreTable[2])
-        self.highScoreTable4.set(self.highestScoreTable[3])
-        self.highScoreTable5.set(self.highestScoreTable[4])
-        self.highScoreTable6.set(self.highestScoreTable[5])
-        self.highScoreTable7.set(self.highestScoreTable[6])
-        self.highScoreTable8.set(self.highestScoreTable[7])
-        self.highScoreTable9.set(self.highestScoreTable[8])
-        self.highScoreTable10.set(self.highestScoreTable[9])
-        
-        Label(self.view_stats_window, text="1:").grid(row=0, column=0)
-        Label(self.view_stats_window, textvariable=self.highScoreTable1).grid(row=0, column=1)
-        Label(self.view_stats_window, text="2:").grid(row=1, column=0)
-        Label(self.view_stats_window, textvariable=self.highScoreTable2).grid(row=1, column=1)
-        Label(self.view_stats_window, text="3:").grid(row=2, column=0)
-        Label(self.view_stats_window, textvariable=self.highScoreTable3).grid(row=2, column=1)
-        Label(self.view_stats_window, text="4:").grid(row=3, column=0)
-        Label(self.view_stats_window, textvariable=self.highScoreTable4).grid(row=3, column=1)
-        Label(self.view_stats_window, text="5:").grid(row=4, column=0)
-        Label(self.view_stats_window, textvariable=self.highScoreTable5).grid(row=4, column=1)
-        Label(self.view_stats_window, text="6:").grid(row=5, column=0)
-        Label(self.view_stats_window, textvariable=self.highScoreTable6).grid(row=5, column=1)
-        Label(self.view_stats_window, text="7:").grid(row=6, column=0)
-        Label(self.view_stats_window, textvariable=self.highScoreTable7).grid(row=6, column=1)
-        Label(self.view_stats_window, text="8:").grid(row=7, column=0)
-        Label(self.view_stats_window, textvariable=self.highScoreTable8).grid(row=7, column=1)
-        Label(self.view_stats_window, text="9:").grid(row=8, column=0)
-        Label(self.view_stats_window, textvariable=self.highScoreTable9).grid(row=8, column=1)
-        Label(self.view_stats_window, text="10:").grid(row=9, column=0)
-        Label(self.view_stats_window, textvariable=self.highScoreTable10).grid(row=9, column=1)
-        
-        #high_score_table = Label(self.view_stats_window, textvariable=self.high_score_table)
-        #high_score_table.grid(row=0, column=0)
-        #self.high_score_table.set(self.highestScoreTable)
-        '''
+    
+    
 
 
         
@@ -158,16 +118,8 @@ class MainApplication(Frame):
         self.numberToGoFor.set(self.number_to_go_for)
         self.runningTotal.set(0)
         self.highest_score.set(self.highestScore)
-        '''
-        self.playerStats(self.playerName)
-        self.player_stats['attempts'] += 1
-        self.player_stats[1] += 1
-        pickleList = (self.player_stats)
-        file = open(self.fullFileTitle, 'wb')
-        pickle.dump(pickleList, file)
-        print(self.player_stats)
-        file.close()
-        '''
+        
+    
         
 
     def scoreEntered(self):
@@ -204,89 +156,6 @@ class MainApplication(Frame):
             self.resetHighScore(final_total, self.playerName, self.highestScoreTable)
         print("Total", final_total)
 
-
-
-    def highScoreCheck(self):
-        print(os.path.exists("highscore"))
-        if os.path.exists("highscore") == False:
-            playerName = "Joe Bloggs"
-            highScore = 1
-            highestScoreTable = [10,9,8,7,6,5,4,3,2,1]
-            pickleList = (playerName, highScore, highestScoreTable)
-            file = open("highscore", "wb")
-            pickle.dump(pickleList, file)
-            file.close()
-            self.highestScore = highScore
-            self.highestScoreTable = highestScoreTable
-        
-
-        else:
-            unpickle = open("highscore", "rb")
-            unpickledList = pickle.load(unpickle)
-            self.highestScore = unpickledList[1]
-            self.highestScoreTable = unpickledList[2]
-            unpickle.close()
-            print(self.highestScore)
-
-
-    
-
-    def highScoreTable(self, newTotal, playerName, highestScoreTable):
-        unpickle = open("highscore", "rb")
-        unpickledList = pickle.load(unpickle)
-        self.highestScoreTable = unpickledList[2]
-        unpickle.close()
-        highScore = newTotal
-        for numb in self.highestScoreTable:
-            if newTotal > numb:
-                del self.highestScoreTable[9]
-                self.highestScoreTable.append(newTotal)
-                self.highestScoreTable.sort(reverse=True)
-                pickleList = (playerName, highScore, highestScoreTable)
-                file = open("highscore", "wb")
-                pickle.dump(pickleList, file)
-                file.close()
-                print(self.highestScoreTable)
-                break
-        
-
-    def resetHighScore(self, highScore, playerName, highestScoreTable):
-        print(highScore)
-        print(playerName)
-        pickleList = (playerName, highScore, highestScoreTable)
-        file = open("highscore", "wb")
-        pickle.dump(pickleList, file)
-        file.close()
-        
-
-'''
-    def playerStats(self, playerName):
-        
-        self.fullFileTitle = playerName + ".stats"
-        if os.path.exists(self.fullFileTitle) == False:
-            playerStats = {'attempts' : 0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0,
-                           10:0, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0, 25:0}
-            pickleList = (playerStats)
-            file = open(fullFileTitle, 'wb')
-            pickle.dump(pickleList, file)
-            file.close()
-        else:
-            pass
-        unpickle = open(self.fullFileTitle, 'rb')
-        unpickledList = pickle.load(unpickle)
-        self.player_stats = unpickledList
-        #self.player_stats['attempts'] += 1
-        #self.player_stats[1] += 1
-        #print(self.player_stats)
-        unpickle.close()
-        print(self.player_stats)
-
-'''
-        
-
-
-     # main loop
-#functions
 
 
 
