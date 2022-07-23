@@ -5,8 +5,9 @@ from tkinter import *
 # set main menu
 root = Tk()
 root.title('Darts')
-#root.iconbitmap()
-root.geometry("400x400")
+root.iconbitmap('darts.ico')
+#root.iconphoto(False, PhotoImage(file='/darts.jpeg'))
+root.geometry('600x600')
 
 my_menu = Menu(root)
 root.config(menu=my_menu)
@@ -23,6 +24,8 @@ def rtb_new_game():
 def hide_all_frames():
     fiveohone_newgame_frame.pack_forget()
     rtb_newgame_frame.pack_forget()
+    fiveohone_game_frame.pack_forget()
+    
 
 def fiveohone_start():
     hide_all_frames()
@@ -44,9 +47,9 @@ rtb_menu.add_command(label='New Game', command=rtb_new_game)
 
 
 #setup frames(
-fiveohone_newgame_frame = Frame(root, width=400, height=400, bg='blue')
-fiveohone_game_frame = Frame(root, width=400, height=400, bg='yellow')
-rtb_newgame_frame = Frame(root, width=400, height=400, bg='red')
+fiveohone_newgame_frame = Frame(root, width=600, height=600, bg='blue')
+fiveohone_game_frame = Frame(root, width=600, height=600, bg='yellow')
+rtb_newgame_frame = Frame(root, width=600, height=600, bg='red')
 
 #populate frames
 
