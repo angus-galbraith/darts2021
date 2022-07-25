@@ -7,7 +7,6 @@ class player:
         
         self.stats = {
             "name": "Player",
-            "score": 501,
             "sets": 0,
             "legs": 0,
             "180": 0,
