@@ -19,3 +19,7 @@ class player:
             "totalscore": 0,
             "totaldarts": 0,
         }
+
+        self.score = {
+            "remaining": 501,
+        }

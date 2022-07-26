@@ -49,20 +49,31 @@ class gameLoop:
         Button(self.win, text="Start", command=self.start_game).grid(row=4, column=1,columnspan=2)
 
     def start_game(self):
-        player1 = player()
+        player1 = player()  #create 2 instances of the player class
         player2 = player()
-        player1.stats["name"] = self.pl1ent.get()
+        player1.stats["name"] = self.pl1ent.get()  # set the players names
         player2.stats["name"] = self.pl2ent.get()
-        self.frame_one.screen_refresh(player1.stats)
+        self.frame_one.screen_refresh(player1.stats) # populate the three screens
         self.frame_two.screen_refresh(player2.stats)
-        self.frame_three.screen_setup(player1.stats, player2.stats)
-        self.legs_to_win = self.legs_spinbox.get()
+        self.frame_three.screen_setup(player1.stats, player2.stats, player1.score, player2.score)
+        self.legs_to_win = self.legs_spinbox.get() # set variables for legs and sets 
         self.sets_to_win = self.sets_spinbox.get()
+        self.leg_to_play = 1  # starting variables for legs and sets
+        self.set_to_play = 1
         self.to_throw()
         self.win.destroy()
 
     def to_throw(self):
-        pass
+        if self.set_to_play % 2 != 0:
+            if self.leg_to_play %2 != 0:
+                self.current_player = 1
+                self.frame_three.pl1_remaining.configure(bg="yellow")
+            else:
+                self.current_player = 2
+                self.frame_three.pl2_remaining.configure(bg="yellow")
+
+
+
 
 game = gameLoop(root)
 root.mainloop()
