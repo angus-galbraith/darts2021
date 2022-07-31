@@ -1,4 +1,6 @@
 from tkinter import *
+from classversion import *
+
 
 
 
@@ -36,8 +38,8 @@ class scoreFrame(Frame):
         Button(self, text="Enter Score", command=self.button_pressed).grid(row=2, column=1)
 
 
-    def button_pressed(self):
-        pass
+    def button_pressed():
+        game.button_pressed()
 
 
 
