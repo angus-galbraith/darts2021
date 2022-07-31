@@ -1,5 +1,5 @@
 from tkinter import *
-from frameimport import *
+from frameimport import scoreFrame
 from players import player
 
 root = Tk()
@@ -60,19 +60,41 @@ class gameLoop:
         self.sets_to_win = self.sets_spinbox.get()
         self.leg_to_play = 1  # starting variables for legs and sets
         self.set_to_play = 1
-        self.to_throw()
         self.win.destroy()
+        self.to_throw()
+        
 
+    '''
+    Player 1 throws first in the odd legs in the odd sets 
+    Player 2 throws first in the odd legs in the even sets
+    '''
     def to_throw(self):
         if self.set_to_play % 2 != 0:
             if self.leg_to_play %2 != 0:
                 self.current_player = 1
                 self.frame_three.pl1_remaining.configure(bg="yellow")
+                self.frame_three.pl2_remaining.configure(bg="white")
+                self.frame_three.score_ent.focus()
             else:
                 self.current_player = 2
                 self.frame_three.pl2_remaining.configure(bg="yellow")
+                self.frame_three.pl1_remaining.configure(bg="white")
+                self.frame_three.score_ent.focus()
+        else:
+            if self.leg_to_play %2 != 0:
+                self.current_player = 2
+                self.frame_three.pl2_remaining.configure(bg="yellow")
+                self.frame_three.pl1_remaining.configure(bg="white")
+                self.frame_three.score_ent.focus()
+            else:
+                self.current_player = 1
+                self.frame_three.pl1_remaining.configure(bg="yellow")
+                self.frame_three.pl2_remaining.configure(bg="white")
+                self.frame_three.score_ent.focus()
 
 
+    def button_pressed(self):
+        print("score entered")
 
 
 game = gameLoop(root)
