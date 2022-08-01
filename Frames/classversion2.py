@@ -51,9 +51,9 @@ class mainFrame(Frame):
         self.player1.stats["name"]= self.pl1ent.get()  # set the players names
         self.player2.stats["name"] = self.pl2ent.get()
         self.add_frames()
-        self.screen_refresh(self.frame_one, self.player1.stats) # populate the three screens
-        self.screen_refresh(self.frame_two, self.player2.stats)
-        self.screen_setup(self.frame_three)
+        self.screen_refresh(self.frame_one, self.frame_two, self.frame_three, self.player1.stats, self.player2.stats) # populate the three screens
+        #self.screen_refresh(self.frame_two, self.player2.stats)
+        #self.screen_setup(self.frame_three)
         #self.frame_three.screen_setup(player1.stats, player2.stats, player1.score, player2.score)
         self.legs_to_win = self.legs_spinbox.get() # set variables for legs and sets 
         self.sets_to_win = self.sets_spinbox.get()
@@ -62,7 +62,7 @@ class mainFrame(Frame):
         self.win.destroy()
         self.to_throw()
 
-    def screen_refresh(self, frame, player):
+    def screen_refresh(self, frame, frame1, frame2, player, player1):
         player = player
         frame = frame
         rownum = 0
@@ -70,6 +70,25 @@ class mainFrame(Frame):
             Label(frame, text=key).grid(row=rownum, column=0)
             Label(frame, text=value).grid(row=rownum, column=1)
             rownum += 1
+        player1 = player1
+        frame1 = frame1
+        rownum = 0
+        for (key, value) in player1.items():
+            Label(frame1, text=key).grid(row=rownum, column=0)
+            Label(frame1, text=value).grid(row=rownum, column=1)
+            rownum += 1
+        frame2 = frame2
+        Label(frame2, text=self.player1.stats["name"], font=(None, 25)).grid(row=0, column=0)
+        Label(frame2, text=self.player2.stats["name"], font=(None, 25)).grid(row=0, column=1)
+        self.pl1_remaining = Label(frame2, text=self.player1.score["remaining"], font=(None, 40))
+        self.pl1_remaining.grid(row=1, column=0)
+        self.pl1_remaining.configure(bg="white")
+        self.pl2_remaining = Label(frame2, text=self.player2.score["remaining"], font=(None, 40))
+        self.pl2_remaining.grid(row=1, column=1)
+        self.pl2_remaining.configure(bg="white")
+        self.score_ent = Entry(frame2, width=10)
+        self.score_ent.grid(row=2,column=0)
+        Button(frame2, text="Enter Score", command=self.button_pressed).grid(row=2, column=1)
 
     def screen_setup(self, frame):
         frame = frame
@@ -85,37 +104,52 @@ class mainFrame(Frame):
         self.score_ent.grid(row=2,column=0)
         Button(frame, text="Enter Score", command=self.button_pressed).grid(row=2, column=1)
 
-    def to_throw(self):
+    def to_throw(self): # called on al the start of a  leg
         if self.set_to_play % 2 != 0:
             if self.leg_to_play %2 != 0:
                 self.current_player = 1
-                self.pl1_remaining.configure(bg="yellow")
-                self.pl2_remaining.configure(bg="white")
-                self.score_ent.focus()
+                self.player_to_throw()
             else:
                 self.current_player = 2
-                self.pl2_remaining.configure(bg="yellow")
-                self.pl1_remaining.configure(bg="white")
-                self.score_ent.focus()
+                self.player_to_throw()
         else:
             if self.leg_to_play %2 != 0:
                 self.current_player = 2
-                self.pl2_remaining.configure(bg="yellow")
-                self.pl1_remaining.configure(bg="white")
-                self.score_ent.focus()
+                self.player_to_throw()
             else:
                 self.current_player = 1
-                self.pl1_remaining.configure(bg="yellow")
-                self.pl2_remaining.configure(bg="white")
-                self.score_ent.focus()
+                self.player_to_throw()
+
+
+    def player_to_throw(self): # callled for each throw
+        if self.current_player == 1:
+            self.pl1_remaining.configure(bg="yellow")
+            self.pl2_remaining.configure(bg="white")
+            self.score_ent.focus()
+        else:
+            self.pl2_remaining.configure(bg="yellow")
+            self.pl1_remaining.configure(bg="white")
+            self.score_ent.focus()
+        
+
+
 
     def button_pressed(self):
-        score = self.score_ent.get()
+        score = int(self.score_ent.get())
         if self.current_player == 1:
             self.player1.score_entered(score)
+            self.screen_refresh(self.frame_one, self.frame_two, self.frame_three, self.player1.stats, self.player2.stats)
+            self.current_player = 2
+            self.player_to_throw()
 
         else:
             self.player2.score_entered(score)
+            self.screen_refresh(self.frame_one, self.frame_two, self.frame_three, self.player1.stats, self.player2.stats)
+            self.current_player = 1
+            self.player_to_throw()
+
+
+
 
 screen = mainFrame(root)
 screen.mainloop()
