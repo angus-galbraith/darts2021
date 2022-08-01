@@ -41,7 +41,13 @@ class player:
         elif score >= 60:
             self.stats['60'] += 1
         
+        if self.score['remaining'] == 0:
+            self.leg_won()
+
 
         return
         
+    def leg_won(self):
+        print("leg won")
+        return
 

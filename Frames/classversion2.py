@@ -1,5 +1,5 @@
 from tkinter import *
-from players import player
+
 
 root = Tk()
 root.title("Darts")
@@ -52,9 +52,6 @@ class mainFrame(Frame):
         self.player2.stats["name"] = self.pl2ent.get()
         self.add_frames()
         self.screen_refresh(self.frame_one, self.frame_two, self.frame_three, self.player1.stats, self.player2.stats) # populate the three screens
-        #self.screen_refresh(self.frame_two, self.player2.stats)
-        #self.screen_setup(self.frame_three)
-        #self.frame_three.screen_setup(player1.stats, player2.stats, player1.score, player2.score)
         self.legs_to_win = self.legs_spinbox.get() # set variables for legs and sets 
         self.sets_to_win = self.sets_spinbox.get()
         self.leg_to_play = 1  # starting variables for legs and sets
@@ -90,19 +87,6 @@ class mainFrame(Frame):
         self.score_ent.grid(row=2,column=0)
         Button(frame2, text="Enter Score", command=self.button_pressed).grid(row=2, column=1)
 
-    def screen_setup(self, frame):
-        frame = frame
-        Label(frame, text=self.player1.stats["name"], font=(None, 25)).grid(row=0, column=0)
-        Label(frame, text=self.player2.stats["name"], font=(None, 25)).grid(row=0, column=1)
-        self.pl1_remaining = Label(frame, text=self.player1.score["remaining"], font=(None, 40))
-        self.pl1_remaining.grid(row=1, column=0)
-        self.pl1_remaining.configure(bg="white")
-        self.pl2_remaining = Label(frame, text=self.player2.score["remaining"], font=(None, 40))
-        self.pl2_remaining.grid(row=1, column=1)
-        self.pl2_remaining.configure(bg="white")
-        self.score_ent = Entry(frame, width=10)
-        self.score_ent.grid(row=2,column=0)
-        Button(frame, text="Enter Score", command=self.button_pressed).grid(row=2, column=1)
 
     def to_throw(self): # called on al the start of a  leg
         if self.set_to_play % 2 != 0:
@@ -148,6 +132,57 @@ class mainFrame(Frame):
             self.current_player = 1
             self.player_to_throw()
 
+
+class player:
+    def __init__(self,):
+
+        self.name = "Player"
+        
+        self.stats = {
+            "name": "Player",
+            "sets": 0,
+            "legs": 0,
+            "180": 0,
+            "140": 0,
+            "100": 0,
+            "80": 0,
+            "60": 0,
+            "Average": 0,
+            "Checkout %": 0,
+            
+        }
+
+        self.score = {
+            "remaining": 501,
+            "totalscore": 0,
+            "totaldarts": 0,
+        }
+
+    def score_entered(self, score):
+        score = score
+        self.score['remaining'] -= score
+        if score == 180:
+            self.stats['180'] += 1
+        elif score >= 140:
+            self.stats['140'] += 1
+        elif score >= 100:
+            self.stats['100'] += 1
+        elif score >= 80:
+            self.stats['80'] += 1
+        elif score >= 60:
+            self.stats['60'] += 1
+        
+        if self.score['remaining'] == 0:
+            self.leg_won()
+
+
+        return
+        
+    def leg_won(self):
+        self.stats['legs'] += 1
+        screen.player1.score['remaining'] = 501
+        screen.player2.score['remaining'] = 501
+        return
 
 
 
