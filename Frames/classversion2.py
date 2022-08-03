@@ -3,7 +3,7 @@ from tkinter import *
 
 root = Tk()
 root.title("Darts")
-root.geometry("450x350")
+root.geometry("450x375")
 
 
 
@@ -89,6 +89,9 @@ class mainFrame(Frame):
 
 
     def to_throw(self): # called on al the start of a  leg
+        self.player1.score['remaining'] = 501
+        self.player2.score['remaining'] = 501
+        self.screen_refresh(self.frame_one, self.frame_two, self.frame_three, self.player1.stats, self.player2.stats)
         if self.set_to_play % 2 != 0:
             if self.leg_to_play %2 != 0:
                 self.current_player = 1
@@ -148,6 +151,8 @@ class player:
             "80": 0,
             "60": 0,
             "Average": 0,
+            "Darts at double": 0,
+            "Doubles Hit": 0,
             "Checkout %": 0,
             
         }
@@ -161,6 +166,7 @@ class player:
     def score_entered(self, score):
         score = score
         self.score['remaining'] -= score
+        self.score['totalscore'] += score
         if score == 180:
             self.stats['180'] += 1
         elif score >= 140:
@@ -174,15 +180,33 @@ class player:
         
         if self.score['remaining'] == 0:
             self.leg_won()
+        
+        if self.score['remaining'] <= 50:
+            self.darts_at_double()
 
-
+        
         return
+
+    def darts_at_double(self):
+        self.doubles_window = Toplevel()
+
+    def calculate_averages(self):
+        pass
         
     def leg_won(self):
         self.stats['legs'] += 1
-        screen.player1.score['remaining'] = 501
-        screen.player2.score['remaining'] = 501
-        return
+        if self.stats['legs'] == screen.legs_to_win:
+            self.set_won()
+        else:
+            screen.to_throw()
+
+
+    def set_won(self):
+        print('set won')
+
+
+        
+        
 
 
 
