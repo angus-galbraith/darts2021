@@ -77,10 +77,10 @@ class mainFrame(Frame):
         frame2 = frame2
         Label(frame2, text=self.player1.stats["name"], font=(None, 25)).grid(row=0, column=0)
         Label(frame2, text=self.player2.stats["name"], font=(None, 25)).grid(row=0, column=1)
-        self.pl1_remaining = Label(frame2, text=self.player1.score["remaining"], font=(None, 40))
+        self.pl1_remaining = Label(frame2, text=self.player1.score["remaining"], font=(None, 40), width=3, height=1)
         self.pl1_remaining.grid(row=1, column=0)
         self.pl1_remaining.configure(bg="white")
-        self.pl2_remaining = Label(frame2, text=self.player2.score["remaining"], font=(None, 40))
+        self.pl2_remaining = Label(frame2, text=self.player2.score["remaining"], font=(None, 40), width=3, height=1)
         self.pl2_remaining.grid(row=1, column=1)
         self.pl2_remaining.configure(bg="white")
         self.score_ent = Entry(frame2, width=10)
@@ -110,12 +110,16 @@ class mainFrame(Frame):
 
     def player_to_throw(self): # callled for each throw
         if self.current_player == 1:
+            self.screen_refresh(self.frame_one, self.frame_two, self.frame_three, self.player1.stats, self.player2.stats)
             self.pl1_remaining.configure(bg="yellow")
             self.pl2_remaining.configure(bg="white")
+            #self.screen_refresh(self.frame_one, self.frame_two, self.frame_three, self.player1.stats, self.player2.stats)
             self.score_ent.focus()
         else:
+            self.screen_refresh(self.frame_one, self.frame_two, self.frame_three, self.player1.stats, self.player2.stats)
             self.pl2_remaining.configure(bg="yellow")
             self.pl1_remaining.configure(bg="white")
+            #self.screen_refresh(self.frame_one, self.frame_two, self.frame_three, self.player1.stats, self.player2.stats)
             self.score_ent.focus()
         
 
@@ -124,15 +128,16 @@ class mainFrame(Frame):
     def button_pressed(self):
         score = int(self.score_ent.get())
         if self.current_player == 1:
-            self.player1.score_entered(score)
-            self.screen_refresh(self.frame_one, self.frame_two, self.frame_three, self.player1.stats, self.player2.stats)
             self.current_player = 2
+            self.player1.score_entered(score)
+            #self.screen_refresh(self.frame_one, self.frame_two, self.frame_three, self.player1.stats, self.player2.stats)
             self.player_to_throw()
 
         else:
-            self.player2.score_entered(score)
-            self.screen_refresh(self.frame_one, self.frame_two, self.frame_three, self.player1.stats, self.player2.stats)
             self.current_player = 1
+            self.player2.score_entered(score)
+            #self.screen_refresh(self.frame_one, self.frame_two, self.frame_three, self.player1.stats, self.player2.stats)
+            
             self.player_to_throw()
 
 
@@ -161,6 +166,7 @@ class player:
             "remaining": 501,
             "totalscore": 0,
             "totaldarts": 0,
+            
         }
 
     def score_entered(self, score):
@@ -183,15 +189,30 @@ class player:
         
         if self.score['remaining'] <= 50:
             self.darts_at_double()
+        
+        self.score['totaldarts'] += 3
+        self.calculate_averages()
 
         
         return
 
     def darts_at_double(self):
         self.doubles_window = Toplevel()
+        Label(self.doubles_window, text="Number of Darts at Doubles").grid(row=0, column=0)
+        self.darts_doubles = Spinbox(self.doubles_window, values=(0,1,2,3))
+        self.darts_doubles.grid(row=0, column=1)
+        Button(self.doubles_window, text="Enter ", command=self.doubles_button_pressed).grid(row=1, column=1, columnspan=2)
+        self.doubles_window.attributes('-topmost', 'true')
+        
+
+    def doubles_button_pressed(self):
+        at_doubles = int(self.darts_doubles.get())
+        self.stats['Darts at double'] += at_doubles
+        self.doubles_window.destroy()
+        screen.player_to_throw()
 
     def calculate_averages(self):
-        pass
+        self.stats['average'] = round(3*(self.score['totalscore']/self.score['totaldarts']), 1)
         
     def leg_won(self):
         self.stats['legs'] += 1
