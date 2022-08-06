@@ -52,7 +52,7 @@ class mainFrame(Frame):
         self.player2.stats["name"] = self.pl2ent.get()
         self.add_frames()
         self.screen_refresh(self.frame_one, self.frame_two, self.frame_three, self.player1.stats, self.player2.stats) # populate the three screens
-        self.legs_to_win = self.legs_spinbox.get() # set variables for legs and sets 
+        self.legs_to_win = int(self.legs_spinbox.get()) # set variables for legs and sets 
         self.sets_to_win = self.sets_spinbox.get()
         self.leg_to_play = 1  # starting variables for legs and sets
         self.set_to_play = 1
@@ -113,13 +113,11 @@ class mainFrame(Frame):
             self.screen_refresh(self.frame_one, self.frame_two, self.frame_three, self.player1.stats, self.player2.stats)
             self.pl1_remaining.configure(bg="yellow")
             self.pl2_remaining.configure(bg="white")
-            #self.screen_refresh(self.frame_one, self.frame_two, self.frame_three, self.player1.stats, self.player2.stats)
             self.score_ent.focus()
         else:
             self.screen_refresh(self.frame_one, self.frame_two, self.frame_three, self.player1.stats, self.player2.stats)
             self.pl2_remaining.configure(bg="yellow")
             self.pl1_remaining.configure(bg="white")
-            #self.screen_refresh(self.frame_one, self.frame_two, self.frame_three, self.player1.stats, self.player2.stats)
             self.score_ent.focus()
         
 
@@ -130,14 +128,11 @@ class mainFrame(Frame):
         if self.current_player == 1:
             self.current_player = 2
             self.player1.score_entered(score)
-            #self.screen_refresh(self.frame_one, self.frame_two, self.frame_three, self.player1.stats, self.player2.stats)
             self.player_to_throw()
 
         else:
             self.current_player = 1
             self.player2.score_entered(score)
-            #self.screen_refresh(self.frame_one, self.frame_two, self.frame_three, self.player1.stats, self.player2.stats)
-            
             self.player_to_throw()
 
 
@@ -186,8 +181,7 @@ class player:
         
         if self.score['remaining'] == 0:
             self.leg_won()
-        
-        if self.score['remaining'] <= 50:
+        elif self.score['remaining'] <= 50:
             self.darts_at_double()
         
         self.score['totaldarts'] += 3
@@ -215,15 +209,49 @@ class player:
         self.stats['average'] = round(3*(self.score['totalscore']/self.score['totaldarts']), 1)
         
     def leg_won(self):
+        self.leg_window = Toplevel()
+        Label(self.leg_window, text="Number of Darts Used").grid(row=0, column=0)
+        self.darts_used = Spinbox(self.leg_window, values=(0,1,2,3))
+        self.darts_used.grid(row=0, column=1)
+        Label(self.leg_window, text="Number of Darts at Doubles").grid(row=1, column=0)
+        self.darts_doubles = Spinbox(self.leg_window, values=(0,1,2,3))
+        self.darts_doubles.grid(row=1, column=1)
+        Button(self.leg_window, text='Enter', command=self.leg_button_pressed).grid(row=2, column=1, columnspan=2)
+        
+
+    def leg_button_pressed(self):
         self.stats['legs'] += 1
+        self.stats['Doubles Hit'] += 1
+        totaldarts = int(self.darts_used.get())
+        doubledarts = int(self.darts_doubles.get())
+        self.score['totaldarts'] += totaldarts
+        self.stats['Darts at double'] += doubledarts
+        self.leg_window.destroy()
+        print(screen.legs_to_win)
+        print(self.stats['legs'])
         if self.stats['legs'] == screen.legs_to_win:
+            print("They are even")
             self.set_won()
         else:
             screen.to_throw()
-
+        
 
     def set_won(self):
-        print('set won')
+        print('at sets')
+        self.stats['sets'] += 1
+        if self.stats['sets'] == screen.sets_to_win:
+            self.game_won()
+        else:
+            screen.player1.stats['legs'] = 0
+            screen.player2.stats['legs'] = 0
+            screen.to_throw()
+
+
+
+
+
+    def game_won(self):
+        print('Game Won')
 
 
         
