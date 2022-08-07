@@ -53,7 +53,7 @@ class mainFrame(Frame):
         self.add_frames()
         self.screen_refresh(self.frame_one, self.frame_two, self.frame_three, self.player1.stats, self.player2.stats) # populate the three screens
         self.legs_to_win = int(self.legs_spinbox.get()) # set variables for legs and sets 
-        self.sets_to_win = self.sets_spinbox.get()
+        self.sets_to_win = int(self.sets_spinbox.get())
         self.leg_to_play = 1  # starting variables for legs and sets
         self.set_to_play = 1
         self.win.destroy()
@@ -217,20 +217,19 @@ class player:
         self.darts_doubles = Spinbox(self.leg_window, values=(0,1,2,3))
         self.darts_doubles.grid(row=1, column=1)
         Button(self.leg_window, text='Enter', command=self.leg_button_pressed).grid(row=2, column=1, columnspan=2)
-        
+        self.leg_window.attributes('-topmost', 'true')
 
     def leg_button_pressed(self):
         self.stats['legs'] += 1
         self.stats['Doubles Hit'] += 1
-        totaldarts = int(self.darts_used.get())
         doubledarts = int(self.darts_doubles.get())
-        self.score['totaldarts'] += totaldarts
         self.stats['Darts at double'] += doubledarts
+        self.stats["Checkout %"] = (self.stats['Doubles Hit']/self.stats['Darts at double'])*100
+        screen.leg_to_play += 1
+        totaldarts = int(self.darts_used.get())
+        self.score['totaldarts'] += totaldarts
         self.leg_window.destroy()
-        print(screen.legs_to_win)
-        print(self.stats['legs'])
         if self.stats['legs'] == screen.legs_to_win:
-            print("They are even")
             self.set_won()
         else:
             screen.to_throw()
@@ -244,6 +243,8 @@ class player:
         else:
             screen.player1.stats['legs'] = 0
             screen.player2.stats['legs'] = 0
+            screen.leg_to_play = 1
+            screen.set_to_play += 1
             screen.to_throw()
 
 
