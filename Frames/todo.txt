@@ -1,0 +1,2 @@
+Need to add a function for rtb new window, which will create top leb=vel to get players name.
+Once enetered, create frame within mainframe, populate with entry box.

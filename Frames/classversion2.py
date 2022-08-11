@@ -57,8 +57,10 @@ class mainFrame(Frame):
         self.my_menu = Menu(root)
         root.config(menu=self.my_menu)
         self.options_menu= Menu(self.my_menu)
-        self.my_menu.add_cascade(label='Options', menu=self.options_menu) 
+        self.my_menu.add_cascade(label='501', menu=self.options_menu) 
         self.options_menu.add_command(label='New Game', command=self.new_game_window)
+        self.my_menu.add_cascade(label='RTB', menu=self.options_menu) 
+        self.options_menu.add_command(label='New Game', command=self.rtbnew_game_window)
 
         
 
@@ -99,6 +101,9 @@ class mainFrame(Frame):
         self.set_to_play = 1
         self.win.destroy()
         self.to_throw()
+
+    def new_game_window(self):
+        pass
 
     def screen_refresh(self, frame, frame1, frame2, player, player1):
         player = player
