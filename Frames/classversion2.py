@@ -1,12 +1,51 @@
 from tkinter import *
+import os
+import openpyxl
 
 
 root = Tk()
 root.title("Darts")
 root.geometry("450x375")
 
+class statistics():
 
+    def __init__(self):
+        check_file = "darts.xlsx"
+        titles = ["Name", "Sets", "Legs", "180's", "160+", "140+", "120+", "100+","80+", "60+", "Average",
+         "Doubles Thrown", "Doubles Hit", "Checkout %"]
 
+        if os.path.isfile(check_file):
+            print("file exists")
+        else:
+            wb = openpyxl.Workbook()
+            sheet = wb.active
+            sheet.title = 'Results'
+            col_num = 2
+            for items in titles:
+                sheet.cell(row= 2, column=col_num).value = items
+                col_num += 1
+            wb.save('darts.xlsx')
+
+    def update_stats(self):
+        wb = openpyxl.load_workbook('darts.xlsx')
+        s = wb.active
+        last_row = len(list(s.rows))
+        last_row += 1
+        col_num = 2
+        values = list(screen.player1.stats.values())
+        for value in values:
+            s.cell(row=last_row, column=col_num).value = value
+            col_num += 1
+        last_row += 1  
+        col_num = 2  
+        values = list(screen.player2.stats.values())
+        for value in values:
+            s.cell(row=last_row, column=col_num).value = value
+            col_num += 1
+        
+        wb.save('darts.xlsx')
+
+            
 
 class mainFrame(Frame):
 
@@ -20,6 +59,8 @@ class mainFrame(Frame):
         self.options_menu= Menu(self.my_menu)
         self.my_menu.add_cascade(label='Options', menu=self.options_menu) 
         self.options_menu.add_command(label='New Game', command=self.new_game_window)
+
+        
 
     def add_frames(self):
        self.frame_one = Frame(self)
@@ -146,7 +187,9 @@ class player:
             "sets": 0,
             "legs": 0,
             "180": 0,
+            "160": 0,
             "140": 0,
+            "120": 0,
             "100": 0,
             "80": 0,
             "60": 0,
@@ -170,8 +213,12 @@ class player:
         self.score['totalscore'] += score
         if score == 180:
             self.stats['180'] += 1
+        elif score >= 160:
+            self.stats['160'] += 1
         elif score >= 140:
             self.stats['140'] += 1
+        elif score >= 120:
+            self.stats['120'] += 1
         elif score >= 100:
             self.stats['100'] += 1
         elif score >= 80:
@@ -206,7 +253,7 @@ class player:
         screen.player_to_throw()
 
     def calculate_averages(self):
-        self.stats['average'] = round(3*(self.score['totalscore']/self.score['totaldarts']), 1)
+        self.stats['Average'] = round(3*(self.score['totalscore']/self.score['totaldarts']), 1)
         
     def leg_won(self):
         self.leg_window = Toplevel()
@@ -252,13 +299,15 @@ class player:
 
 
     def game_won(self):
-        print('Game Won')
+        print("Game over")
+        player_stats.update_stats()
+
+
 
 
         
-        
 
 
-
+player_stats = statistics()
 screen = mainFrame(root)
 screen.mainloop()
