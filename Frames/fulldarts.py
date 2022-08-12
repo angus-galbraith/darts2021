@@ -102,7 +102,7 @@ class mainFrame(Frame):
         self.win.destroy()
         self.to_throw()
 
-    def new_game_window(self):
+    def rtbnew_game_window(self):
         pass
 
     def screen_refresh(self, frame, frame1, frame2, player, player1):
